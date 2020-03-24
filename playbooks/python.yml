@@ -1,0 +1,20 @@
+---
+# Dependencies install
+# Reference: https://www.rosehosting.com/blog/how-to-install-python-3-6-4-on-centos-7/
+- hosts: appServer
+  become: yes
+  become_user: root
+  become_method: sudo
+  tasks:
+    - name: install and update ius-release package
+      yum:
+        name: centos-release-scl
+        state: latest
+    - name: Install python 3 from repo
+      yum:
+        name:
+         - python36u
+         - python36u-libs
+         - python36u-devel
+         - python36u-pip
+        state: present
