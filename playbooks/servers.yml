@@ -1,21 +1,57 @@
 ---
 # web server installation
-- hosts: webserver
+- hosts: producer
   become: yes
   become_user: root
   become_method: sudo
-  tasks:
-    - name: install nginx
-      yum:
-        name: nginx
+  tasks:  
+    - name: Execute the command in remote shell and create a directory examples
+      shell: mkdir examples
+    
+    - name: Install git
+      apt:
+        name: git
         state: present
+    
+    - name: Git Clone Repo
+      git: 
+        repo: https://github.com/felipej9805/RabbitMQ-Examples.git
+        dest: '/home/vagrant/examples'
+        update: yes
+        force: yes
+        accept_hostkey: no
+
+#    - name: Go to the folder and execute command
+#      command: chdir=/home/vagrant/examples/hello-world ls
+
+    - name: Install pip
+      shell: sudo apt install python3-pip
+
+    - name: Install pika
+      shell: python3 -m pip install pika --upgrade
+    
+#    - name: Run script
+#      shell: python3 /home/vagrant/examples/hello-world/send.py
+
+
 #database installation
-- hosts: database
-  become: yes
-  become_user: root
-  become_method: sudo
-  tasks:
-    - name: install postgresql
-      yum:
-        name: postgresql
-        state: present
+#- hosts: consumerA
+#  become: yes
+#  become_user: root
+#  become_method: sudo
+#  tasks:
+#    - name: install postgresql
+#      yum:
+#        name: postgresql
+#        state: present
+
+#database installation
+#- hosts: consumerB
+#  become: yes
+#  become_user: root
+#  become_method: sudo
+#  tasks:
+#    - name: install postgresql
+#      yum:
+#        name: postgresql
+#        state: present
