@@ -1,5 +1,5 @@
 ---
-# web server installation
+# Producer Installation
 - hosts: producer
   become: yes
   become_user: root
@@ -21,37 +21,115 @@
         force: yes
         accept_hostkey: no
 
-#    - name: Go to the folder and execute command
-#      command: chdir=/home/vagrant/examples/hello-world ls
 
     - name: Install pip
-      shell: sudo apt install python3-pip
+      apt:
+        name: python3-pip
+        state: present
+
 
     - name: Install pika
       shell: python3 -m pip install pika --upgrade
     
-#    - name: Run script
-#      shell: python3 /home/vagrant/examples/hello-world/send.py
+
+    - name: Allow execution permissions to producer profesores
+      shell: chmod +x /home/vagrant/examples/SD-Parcial/producer-profesores.py
+
+    - name: Execute producer-profesores
+      shell: python3 /home/vagrant/examples/SD-Parcial/producer-profesores.py
 
 
-#database installation
-#- hosts: consumerA
-#  become: yes
-#  become_user: root
-#  become_method: sudo
-#  tasks:
-#    - name: install postgresql
-#      yum:
-#        name: postgresql
-#        state: present
 
-#database installation
-#- hosts: consumerB
-#  become: yes
-#  become_user: root
-#  become_method: sudo
-#  tasks:
-#    - name: install postgresql
-#      yum:
-#        name: postgresql
-#        state: present
+    - name: Allow execution permissions to producer estudiantes
+      shell: chmod +x /home/vagrant/examples/SD-Parcial/producer-estudiantes.py
+
+    - name: Execute producer-estudiantes
+      shell: python3 /home/vagrant/examples/SD-Parcial/producer-estudiantes.py
+
+
+
+    - name: Allow execution permissions to broadcast
+      shell: chmod +x /home/vagrant/examples/SD-Parcial/broadcast.py
+
+    - name: Execute broadcast
+      shell: python3 /home/vagrant/examples/SD-Parcial/broadcast.py
+
+    
+# ConsumerA (Teachers)
+- hosts: consumerA
+  become: yes
+  become_user: root
+  become_method: sudo
+  tasks:  
+    - name: Execute the command in remote shell and create a directory examples
+      shell: mkdir examples
+    
+    - name: Install git
+      apt:
+        name: git
+        state: present
+    
+    - name: Git Clone Repo
+      git: 
+        repo: https://github.com/felipej9805/RabbitMQ-Examples.git
+        dest: '/home/vagrant/examples'
+        update: yes
+        force: yes
+        accept_hostkey: no
+
+
+    - name: Install pip
+      apt:
+        name: python3-pip
+        state: present
+
+
+    - name: Install pika
+      shell: python3 -m pip install pika --upgrade
+    
+
+    - name: Allow execution permissions to consumer profesores
+      shell: chmod +x /home/vagrant/examples/SD-Parcial/receiver-profesores.py
+
+    - name: Execute consumer-profesores
+      shell: python3 /home/vagrant/examples/SD-Parcial/receiver-profesores.py
+
+   
+# ConsumerB (Students)
+- hosts: consumerB
+  become: yes
+  become_user: root
+  become_method: sudo
+  tasks:  
+    - name: Execute the command in remote shell and create a directory examples
+      shell: mkdir examples
+    
+    - name: Install git
+      apt:
+        name: git
+        state: present
+    
+    - name: Git Clone Repo
+      git: 
+        repo: https://github.com/felipej9805/RabbitMQ-Examples.git
+        dest: '/home/vagrant/examples'
+        update: yes
+        force: yes
+        accept_hostkey: no
+
+
+    - name: Install pip
+      apt:
+        name: python3-pip
+        state: present
+
+
+    - name: Install pika
+      shell: python3 -m pip install pika --upgrade
+    
+
+    - name: Allow execution permissions to consumer student
+      shell: chmod +x /home/vagrant/examples/SD-Parcial/receiver-estudiantes.py
+
+    - name: Execute consumer-estudiantes
+      shell: python3 /home/vagrant/examples/SD-Parcial/receiver-estudiantes.py
