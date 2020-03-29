@@ -2,8 +2,8 @@
 # vi: set ft=ruby :
 servers = {
   "producer" => { :ip => "192.168.56.2", :cpus => 1, :mem => 1024, :ssh_port=>2222 },
-  "consumerA" => { :ip => "192.168.56.3", :cpus => 1, :mem => 1024, :ssh_port=>2200 },
-  "consumerB" => { :ip => "192.168.56.4", :cpus => 1, :mem => 1024, :ssh_port=>2211 },
+  "consumerA" => { :ip => "192.168.56.3", :cpus => 1, :mem => 1024, :ssh_port=>2222 },
+#  "consumerB" => { :ip => "192.168.56.4", :cpus => 1, :mem => 1024, :ssh_port=>2211 },
 
   
 }
@@ -31,6 +31,6 @@ Vagrant.configure("2") do |config| #Loads the Vagrant API version 2 and assign t
             ansible.inventory_path = 'hosts'
             ansible.verbose = 'vvv'
             ansible.playbook = 'playbooks/servers.yml'
-            ansible.limit = 'all'
+#            ansible.limit = 'all'
     end
 end
