@@ -3,7 +3,7 @@
 servers = {
   "producer" => { :ip => "192.168.56.2", :cpus => 1, :mem => 1024, :ssh_port=>2222 },
   "consumerA" => { :ip => "192.168.56.3", :cpus => 1, :mem => 1024, :ssh_port=>2222 },
-#  "consumerB" => { :ip => "192.168.56.4", :cpus => 1, :mem => 1024, :ssh_port=>2211 },
+  "consumerB" => { :ip => "192.168.56.4", :cpus => 1, :mem => 1024, :ssh_port=>2222 },
 
   
 }
